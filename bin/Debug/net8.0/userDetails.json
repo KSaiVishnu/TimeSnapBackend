@@ -1,0 +1,51 @@
+[
+  {
+    "email": "admin1_51@gmail.com",
+    "password": "admin1_51",
+    "fullName": "Admin 1",
+    "role": "Admin",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiJiMDk5MDg1Yy0wNzdmLTQ5NDAtYWYwMS03NDE4NWFiMjAyZjIiLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3Mzg1MTI0ODEsImV4cCI6MTczOTM3NjQ4MSwiaWF0IjoxNzM4NTEyNDgxfQ.gk3b8l4nnSXNFcrhfBfQ86q0HtcPay3YLOhVe7HL5Ek"
+  },
+  {
+    "email": "manager1_36@gmail.com",
+    "password": "manager1_36",
+    "fullName": "Manager 1",
+    "role": "Manager",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI3YzY3YzAwNy1hNGE3LTQwNzktYjhjZi00YThlNGI2ZjAyYmEiLCJyb2xlIjoiTWFuYWdlciIsIm5iZiI6MTczODMyNzQ4MSwiZXhwIjoxNzM5MTkxNDgxLCJpYXQiOjE3MzgzMjc0ODF9.At6iB-5TRgzTNVfI2vMXhXC5gxYB0pjU9p0BxFD4wao"
+  },
+  {
+    "email": "manager2_40@gmail.com",
+    "password": "manager2_40",
+    "fullName": "Manager 2",
+    "role": "Manager",
+    "token": ""
+  },
+  {
+    "email": "employee1_21@gmail.com",
+    "password": "employee1_21",
+    "fullName": "Employee 1",
+    "role": "Employee",
+    "token": ""
+  },
+  {
+    "email": "employee2_21@gmail.com",
+    "password": "employee2_21",
+    "fullName": "Employee 2",
+    "role": "Employee",
+    "token": ""
+  },
+  {
+    "email": "employee3_9@gmail.com",
+    "password": "employee3_9",
+    "fullName": "Employee 3",
+    "role": "Employee",
+    "token": ""
+  },
+  {
+    "email": "employee4_32@gmail.com",
+    "password": "employee4_32",
+    "fullName": "Employee 4",
+    "role": "Employee",
+    "token": ""
+  }
+]
