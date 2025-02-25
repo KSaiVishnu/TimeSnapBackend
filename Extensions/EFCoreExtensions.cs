@@ -123,6 +123,7 @@ using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
 using Microsoft.Data.SqlClient;
+using Backend.Controllers;
 
 namespace Backend.Extensions
 {
@@ -154,6 +155,7 @@ namespace Backend.Extensions
 
             return services;
         }
+
 
 
 
