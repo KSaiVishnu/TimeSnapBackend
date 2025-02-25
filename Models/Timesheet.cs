@@ -12,17 +12,17 @@ namespace Backend.Models
 
         [Required]
         [Column(TypeName = "nvarchar(50)")]
-        public string EmpId { get; set; }  // FK to AppUser.EmpId
+        public string? EmpId { get; set; }  // FK to AppUser.EmpId
 
         [ForeignKey("EmpId")]
         [JsonIgnore]
-        public virtual AppUser Employee { get; set; }
+        public virtual AppUser? Employee { get; set; }
 
         [Required]
         public int TaskId { get; set; } // FK to TaskModel.Id
 
         [ForeignKey("TaskId")]
-        public virtual TaskModel Task { get; set; }
+        public virtual TaskModel? Task { get; set; }
 
         public DateTime? Date { get; set; }
         //public DateTime? EndTime { get; set; }

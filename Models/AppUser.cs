@@ -11,13 +11,13 @@ namespace Backend.Models
     {
         [PersonalData]
         [Column(TypeName = "nvarchar(150)")]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         [Required]
         [Column(TypeName = "nvarchar(50)")]
-        public string EmpId { get; set; }
+        public string? EmpId { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Timesheet> Timesheets { get; set; }
+        public virtual ICollection<Timesheet>? Timesheets { get; set; }
     }
 }

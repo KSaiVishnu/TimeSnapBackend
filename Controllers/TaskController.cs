@@ -13,13 +13,13 @@ namespace Backend.Controllers
     }
     public class Assignee
 {
-    public string AssigneeName { get; set; }
-    public string EmpId { get; set; }
+    public string? AssigneeName { get; set; }
+    public string? EmpId { get; set; }
 }
 
 public class UpdateTaskRequest
 {
-    public List<Assignee> Assignees { get; set; }
+    public List<Assignee>? Assignees { get; set; }
 }
 
 
