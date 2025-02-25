@@ -166,7 +166,20 @@ namespace Backend
             builder.Services.AddControllers();
 
             // ✅ Inject DB Context (Uses Azure Managed Identity for authentication)
-            builder.Services.InjectDbContext(builder.Configuration);
+            //builder.Services.InjectDbContext(builder.Configuration);
+
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION_STRING")
+                                   ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new Exception("Database connection string is missing.");
+            }
+
+            builder.Services.InjectDbContext(connectionString);
+
+
+
 
             builder.Services.AddSwaggerExplorer()
                 .AddAppConfig(builder.Configuration)

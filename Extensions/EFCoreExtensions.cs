@@ -128,13 +128,9 @@ namespace Backend.Extensions
 {
     public static class EFCoreExtensions
     {
-        public static IServiceCollection InjectDbContext(
-            this IServiceCollection services,
-            IConfiguration config)
-        {
-            var connectionString = config.GetConnectionString("DefaultConnection");
 
-            // ✅ Check if running in Azure (Managed Identity is enabled)
+        public static IServiceCollection InjectDbContext(this IServiceCollection services, string connectionString)
+        {
             if (Environment.GetEnvironmentVariable("AZURE_SQL") == "true")
             {
                 services.AddDbContext<AppDbContext>(options =>
@@ -148,12 +144,42 @@ namespace Backend.Extensions
             }
             else
             {
-                // ✅ Use standard authentication for local development
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(connectionString));
             }
 
             return services;
         }
+
+
+        //public static IServiceCollection InjectDbContext(
+        //    this IServiceCollection services,
+        //    IConfiguration config)
+        //{
+        //    var connectionString = config.GetConnectionString("DefaultConnection");
+
+        //    // ✅ Check if running in Azure (Managed Identity is enabled)
+        //    if (Environment.GetEnvironmentVariable("AZURE_SQL") == "true")
+        //    {
+        //        services.AddDbContext<AppDbContext>(options =>
+        //            options.UseSqlServer(new SqlConnection(connectionString)
+        //            {
+        //                AccessToken = new DefaultAzureCredential().GetToken(
+        //                    new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })
+        //                ).Token
+        //            })
+        //        );
+        //    }
+        //    else
+        //    {
+        //        // ✅ Use standard authentication for local development
+        //        services.AddDbContext<AppDbContext>(options =>
+        //            options.UseSqlServer(connectionString));
+        //    }
+
+        //    return services;
+        //}
+
+
     }
 }

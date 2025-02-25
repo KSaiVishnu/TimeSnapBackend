@@ -1,10 +1,14 @@
 services:
   - type: web
     name: my-web-api
-    runtime: docker  # Use Docker instead of dotnet
+    runtime: docker
     repo: https://github.com/KSaiVishnu/TimeSnapBackend
-    region: oregon  # Choose region (optional)
+    region: oregon
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
-    plan: free  # Use 'starter' for paid plans
+      - key: AZURE_SQL
+        value: "true"
+      - key: AZURE_SQL_CONNECTION_STRING
+        value: "Server=tcp:timesnap-server.database.windows.net,1433;Database=ProjectDb;Authentication=Active Directory Default"
+    plan: free
