@@ -131,12 +131,16 @@ namespace Backend.Extensions
 
         public static IServiceCollection InjectDbContext(this IServiceCollection services, string connectionString)
         {
-            if (Environment.GetEnvironmentVariable("AZURE_SQL") == "true")
+            var azureSqlAuth = Environment.GetEnvironmentVariable("AZURE_SQL") == "true";
+
+            if (azureSqlAuth)
             {
+                var credential = new DefaultAzureCredential();  // Uses Managed Identity / Service Principal
+
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(new SqlConnection(connectionString)
                     {
-                        AccessToken = new DefaultAzureCredential().GetToken(
+                        AccessToken = credential.GetToken(
                             new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })
                         ).Token
                     })
@@ -150,6 +154,10 @@ namespace Backend.Extensions
 
             return services;
         }
+
+
+
+
 
 
         //public static IServiceCollection InjectDbContext(
