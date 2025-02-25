@@ -10,7 +10,9 @@ namespace Backend.Extensions
             IConfiguration config)
         {
             app.UseCors(options =>
-            options.WithOrigins("http://localhost:4200")
+                    options.AllowAnyOrigin()  // Allow all origins for now
+
+            //options.WithOrigins("http://localhost:4200")
             .AllowAnyMethod()
             .AllowAnyHeader());
             app.UseCors("AllowAll");
