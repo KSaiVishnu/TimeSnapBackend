@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: my-web-api
+    runtime: docker  # Use Docker instead of dotnet
+    repo: https://github.com/KSaiVishnu/TimeSnapBackend
+    region: oregon  # Choose region (optional)
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+    plan: free  # Use 'starter' for paid plans
