@@ -2,6 +2,6 @@
 {
     public class AppSettings
     {
-        public string JWTSecret { get; set; }
+        public required string JWTSecret { get; set; }
     }
 }

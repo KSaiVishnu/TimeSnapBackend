@@ -8,10 +8,10 @@ namespace Backend.Models
         public int Id { get; set; }
 
         [Required]
-        public string? EmployeeId { get; set; } // Employee ID
+        public required string EmployeeId { get; set; } // Employee ID
 
         [Required]
-        public string? UserName { get; set; } // Assignee Name
+        public required string UserName { get; set; } // Assignee Name
     }
 
 }
