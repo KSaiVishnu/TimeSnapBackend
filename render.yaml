@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-web-api
+    name: timesnap-web-api
     runtime: docker
     repo: https://github.com/KSaiVishnu/TimeSnapBackend
     region: oregon
