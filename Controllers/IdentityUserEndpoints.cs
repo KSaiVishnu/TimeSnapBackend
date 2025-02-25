@@ -71,6 +71,8 @@ namespace Backend.Controllers
             return app;
         }
 
+
+
         [AllowAnonymous]
         public static Messager VerifyOtp([FromBody] OtpVerificationDto model, IHttpContextAccessor httpContextAccessor)
         {
@@ -89,19 +91,58 @@ namespace Backend.Controllers
             return new Messager("User verified successfully.");
         }
 
+
+
+        //    [AllowAnonymous]
+        //    private static async Task SendOtpEmail(string email, string otp)
+        //    {
+        //        var config = new ConfigurationBuilder()
+        //.SetBasePath(AppContext.BaseDirectory) // Set base path
+        //.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // Load config
+        //.AddEnvironmentVariables() // Add environment variables
+        //.Build();
+
+        //        ApiKey = Environment.GetEnvironmentVariable("MySendGridAPIKey")
+        //                 ?? config["SendGrid:ApiKey"];
+
+        //        var client = new SendGridClient(ApiKey);
+
+        //        var from = new EmailAddress("saivishnukamisetty@gmail.com", "Time Snap");
+        //        var subject = "Your OTP Code";
+        //        var to = new EmailAddress(email);
+        //        var plainTextContent = $"Your OTP code is: {otp}. Please enter this code to complete your registration.";
+        //        var htmlContent = $"<strong>Your OTP code is: {otp}</strong>. Please enter this code to complete your registration.";
+        //        var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+
+
+        //        // Send the email
+        //        var response = await client.SendEmailAsync(msg);
+        //        Console.WriteLine($"SendGrid Response: {response.StatusCode}");
+        //        var responseBody = await response.Body.ReadAsStringAsync();
+        //        Console.WriteLine($"SendGrid Response Body: {responseBody}");
+
+        //        if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
+        //        {
+        //            // Handle error (you can log the error here)
+        //            throw new Exception("Failed to send OTP email. SendGrid Response: " + response.StatusCode);
+        //        }
+        //    }
+
+
+
+
         [AllowAnonymous]
         private static async Task SendOtpEmail(string email, string otp)
         {
-            var config = new ConfigurationBuilder()
-    .SetBasePath(AppContext.BaseDirectory) // Set base path
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // Load config
-    .AddEnvironmentVariables() // Add environment variables
-    .Build();
+            // Retrieve SendGrid API Key from environment variables
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
 
-            ApiKey = Environment.GetEnvironmentVariable("MySendGridAPIKey")
-                     ?? config["SendGrid:ApiKey"];
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                throw new Exception("SendGrid API Key is missing! Set 'SENDGRID_API_KEY' in environment variables.");
+            }
 
-            var client = new SendGridClient(ApiKey);
+            var client = new SendGridClient(apiKey);
 
             var from = new EmailAddress("saivishnukamisetty@gmail.com", "Time Snap");
             var subject = "Your OTP Code";
@@ -110,19 +151,31 @@ namespace Backend.Controllers
             var htmlContent = $"<strong>Your OTP code is: {otp}</strong>. Please enter this code to complete your registration.";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 
-
-            // Send the email
-            var response = await client.SendEmailAsync(msg);
-            Console.WriteLine($"SendGrid Response: {response.StatusCode}");
-            var responseBody = await response.Body.ReadAsStringAsync();
-            Console.WriteLine($"SendGrid Response Body: {responseBody}");
-
-            if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
+            try
             {
-                // Handle error (you can log the error here)
-                throw new Exception("Failed to send OTP email. SendGrid Response: " + response.StatusCode);
+                // Send the email
+                var response = await client.SendEmailAsync(msg);
+                Console.WriteLine($"SendGrid Response: {response.StatusCode}");
+
+                var responseBody = await response.Body.ReadAsStringAsync();
+                Console.WriteLine($"SendGrid Response Body: {responseBody}");
+
+                // Check if email was successfully sent
+                if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
+                {
+                    throw new Exception($"Failed to send OTP email. SendGrid Response: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending OTP email: {ex.Message}");
+                throw; // Rethrow for higher-level handling
             }
         }
+
+
+
+
 
         [AllowAnonymous]
         public static async Task<IResult> SendOtp(UserManager<AppUser> userManager, [FromBody] OtpRequestModel body, IHttpContextAccessor httpContextAccessor)
