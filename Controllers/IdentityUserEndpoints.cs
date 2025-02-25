@@ -20,27 +20,27 @@ namespace Backend.Controllers
 {
     public class UserRegistrationModel
     {
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-        public required string FullName { get; set; }
-        public required string Role { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public string? FullName { get; set; }
+        public string? Role { get; set; }
     }
 
     public class LoginModel
     {
-        public required string Email { get; set; }
-        public required string Password { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
     }
 
     public class OtpVerificationDto
     {
-        public required string Email { get; set; }
-        public required string Otp { get; set; }
+        public string? Email { get; set; }
+        public string? Otp { get; set; }
     }
 
     public class OtpRequestModel
     {
-        public required string Email { get; set; }
+        public string? Email { get; set; }
     }
 
     public class Messager
@@ -54,7 +54,7 @@ namespace Backend.Controllers
     
     public static class IdentityUserEndpoints
     {
-        public static string? ApiKey { get; private set; }
+        public static string ApiKey { get; private set; }
 
         public static IEndpointRouteBuilder MapIdentityUserEndpoints(this IEndpointRouteBuilder app)
         {

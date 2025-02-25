@@ -12,7 +12,7 @@ namespace Backend.Models
 
         [Required]
         [Column(TypeName = "nvarchar(50)")]
-        public required string EmpId { get; set; }  // FK to AppUser.EmpId
+        public string? EmpId { get; set; }  // FK to AppUser.EmpId
 
         [ForeignKey("EmpId")]
         [JsonIgnore]
@@ -24,7 +24,7 @@ namespace Backend.Models
         [ForeignKey("TaskId")]
         public virtual TaskModel? Task { get; set; }
 
-        public required DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         //public DateTime? EndTime { get; set; }
         public double TotalMinutes { get; set; }
     }
