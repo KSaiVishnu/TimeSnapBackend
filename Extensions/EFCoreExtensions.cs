@@ -119,6 +119,86 @@
 
 
 
+//using Backend.Models;
+//using Microsoft.EntityFrameworkCore;
+//using Azure.Identity;
+//using Microsoft.Data.SqlClient;
+//using Backend.Controllers;
+
+//namespace Backend.Extensions
+//{
+//    public static class EFCoreExtensions
+//    {
+
+//        public static IServiceCollection InjectDbContext(this IServiceCollection services, string connectionString)
+//        {
+//            var azureSqlAuth = Environment.GetEnvironmentVariable("AZURE_SQL") == "true";
+
+//            if (azureSqlAuth)
+//            {
+//                var credential = new DefaultAzureCredential();  // Uses Managed Identity / Service Principal
+
+//                services.AddDbContext<AppDbContext>(options =>
+//                    options.UseSqlServer(new SqlConnection(connectionString)
+//                    {
+//                        AccessToken = credential.GetToken(
+//                            new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })
+//                        ).Token
+//                    })
+//                );
+//            }
+//            else
+//            {
+//                services.AddDbContext<AppDbContext>(options =>
+//                    options.UseSqlServer(connectionString));
+//            }
+
+//            return services;
+//        }
+
+
+
+
+
+
+
+//public static IServiceCollection InjectDbContext(
+//    this IServiceCollection services,
+//    IConfiguration config)
+//{
+//    var connectionString = config.GetConnectionString("DefaultConnection");
+
+//    // ✅ Check if running in Azure (Managed Identity is enabled)
+//    if (Environment.GetEnvironmentVariable("AZURE_SQL") == "true")
+//    {
+//        services.AddDbContext<AppDbContext>(options =>
+//            options.UseSqlServer(new SqlConnection(connectionString)
+//            {
+//                AccessToken = new DefaultAzureCredential().GetToken(
+//                    new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })
+//                ).Token
+//            })
+//        );
+//    }
+//    else
+//    {
+//        // ✅ Use standard authentication for local development
+//        services.AddDbContext<AppDbContext>(options =>
+//            options.UseSqlServer(connectionString));
+//    }
+
+//    return services;
+//}
+
+
+//    }
+//}
+
+
+
+
+
+
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
@@ -129,23 +209,21 @@ namespace Backend.Extensions
 {
     public static class EFCoreExtensions
     {
-
         public static IServiceCollection InjectDbContext(this IServiceCollection services, string connectionString)
         {
             var azureSqlAuth = Environment.GetEnvironmentVariable("AZURE_SQL") == "true";
 
             if (azureSqlAuth)
             {
-                var credential = new DefaultAzureCredential();  // Uses Managed Identity / Service Principal
+                var credential = new DefaultAzureCredential(); // Uses Managed Identity / Service Principal
+
+                var connection = new SqlConnection(connectionString);
+                connection.AccessToken = credential.GetToken(
+                    new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })
+                ).Token;
 
                 services.AddDbContext<AppDbContext>(options =>
-                    options.UseSqlServer(new SqlConnection(connectionString)
-                    {
-                        AccessToken = credential.GetToken(
-                            new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })
-                        ).Token
-                    })
-                );
+                    options.UseSqlServer(connection));
             }
             else
             {
@@ -155,41 +233,5 @@ namespace Backend.Extensions
 
             return services;
         }
-
-
-
-
-
-
-
-        //public static IServiceCollection InjectDbContext(
-        //    this IServiceCollection services,
-        //    IConfiguration config)
-        //{
-        //    var connectionString = config.GetConnectionString("DefaultConnection");
-
-        //    // ✅ Check if running in Azure (Managed Identity is enabled)
-        //    if (Environment.GetEnvironmentVariable("AZURE_SQL") == "true")
-        //    {
-        //        services.AddDbContext<AppDbContext>(options =>
-        //            options.UseSqlServer(new SqlConnection(connectionString)
-        //            {
-        //                AccessToken = new DefaultAzureCredential().GetToken(
-        //                    new Azure.Core.TokenRequestContext(new[] { "https://database.windows.net/.default" })
-        //                ).Token
-        //            })
-        //        );
-        //    }
-        //    else
-        //    {
-        //        // ✅ Use standard authentication for local development
-        //        services.AddDbContext<AppDbContext>(options =>
-        //            options.UseSqlServer(connectionString));
-        //    }
-
-        //    return services;
-        //}
-
-
     }
 }

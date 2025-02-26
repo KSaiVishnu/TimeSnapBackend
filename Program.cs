@@ -73,6 +73,9 @@
 
 
 
+
+
+
 //using Backend.Controllers;
 //using Backend.Extensions;
 //using Backend.Models;
@@ -138,6 +141,87 @@
 
 
 
+
+
+//using Backend.Controllers;
+//using Backend.Extensions;
+//using Backend.Models;
+//using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.EntityFrameworkCore;
+
+//namespace Backend
+//{
+//    public class Program
+//    {
+//        public static void Main(string[] args)
+//        {
+//            var builder = WebApplication.CreateBuilder(args);
+
+//            builder.Services.AddDistributedMemoryCache();
+//            builder.Services.AddMemoryCache();
+//            builder.Services.AddHttpContextAccessor();
+//            builder.Services.AddSession(options =>
+//            {
+//                options.IdleTimeout = TimeSpan.FromMinutes(5); // OTP expires in 5 mins
+//                options.Cookie.HttpOnly = true;
+//                options.Cookie.IsEssential = true;
+//            });
+
+//            builder.Services.AddControllers();
+
+//            // ✅ Inject DB Context (Uses Azure Managed Identity for authentication)
+//            //builder.Services.InjectDbContext(builder.Configuration);
+
+//            var connectionString = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION_STRING")
+//                                   ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
+//            if (string.IsNullOrEmpty(connectionString))
+//            {
+//                throw new Exception("Database connection string is missing.");
+//            }
+
+//            builder.Services.InjectDbContext(connectionString);
+
+
+
+
+//            builder.Services.AddSwaggerExplorer()
+//                .AddAppConfig(builder.Configuration)
+//                .AddIdentityHandlersAndStores()
+//                .ConfigureIdentityOptions()
+//                .AddIdentityAuth(builder.Configuration);
+
+//            var app = builder.Build();
+
+//            app.UseSession(); // Enable session
+//            app.UseRouting();
+
+//            app.ConfigureSwaggerExplorer()
+//                .ConfigureCORS(builder.Configuration)
+//                .AddIdentityAuthMiddlewares();
+
+//            app.UseHttpsRedirection();
+
+//            app.MapControllers();
+//            app.MapGroup("/api")
+//               .MapIdentityApi<AppUser>();
+//            app.MapGroup("/api")
+//               .MapIdentityUserEndpoints()
+//               .MapAccountEndpoints()
+//               .MapAuthorizationDemoEndpoints();
+
+//            app.Run();
+//        }
+//    }
+//}
+
+
+
+
+
+
+
 using Backend.Controllers;
 using Backend.Extensions;
 using Backend.Models;
@@ -153,6 +237,7 @@ namespace Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // ✅ Add essential services
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddMemoryCache();
             builder.Services.AddHttpContextAccessor();
@@ -165,9 +250,7 @@ namespace Backend
 
             builder.Services.AddControllers();
 
-            // ✅ Inject DB Context (Uses Azure Managed Identity for authentication)
-            //builder.Services.InjectDbContext(builder.Configuration);
-
+            // ✅ Get database connection string
             var connectionString = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION_STRING")
                                    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -176,11 +259,10 @@ namespace Backend
                 throw new Exception("Database connection string is missing.");
             }
 
+            // ✅ Inject DB Context (Handles Azure Managed Identity & Local SQL)
             builder.Services.InjectDbContext(connectionString);
 
-
-
-
+            // ✅ Add App Config & Identity Services
             builder.Services.AddSwaggerExplorer()
                 .AddAppConfig(builder.Configuration)
                 .AddIdentityHandlersAndStores()
@@ -189,15 +271,17 @@ namespace Backend
 
             var app = builder.Build();
 
+            // ✅ Middleware Configuration
             app.UseSession(); // Enable session
             app.UseRouting();
 
             app.ConfigureSwaggerExplorer()
-                .ConfigureCORS(builder.Configuration)
+                .ConfigureCORS() // ✅ Configured in AppConfigExtensions
                 .AddIdentityAuthMiddlewares();
 
             app.UseHttpsRedirection();
 
+            // ✅ Map Controllers & Identity APIs
             app.MapControllers();
             app.MapGroup("/api")
                .MapIdentityApi<AppUser>();
