@@ -54,7 +54,7 @@ namespace Backend.Controllers
     
     public static class IdentityUserEndpoints
     {
-        public static string ApiKey { get; private set; }
+        public static string? ApiKey { get; private set; }
 
         public static IEndpointRouteBuilder MapIdentityUserEndpoints(this IEndpointRouteBuilder app)
         {
@@ -78,7 +78,7 @@ namespace Backend.Controllers
         {
             var httpContext = httpContextAccessor.HttpContext; // Get HttpContext
 
-            var storedOtp = httpContext.Session.GetString("Otp");
+            var storedOtp = httpContext!.Session.GetString("Otp");
             var storedEmail = httpContext.Session.GetString("Email");
 
             if (storedOtp != null && storedEmail != null && storedOtp == model.Otp && storedEmail == model.Email)
@@ -189,10 +189,10 @@ namespace Backend.Controllers
 
             var otp = new Random().Next(100000, 999999).ToString();
 
-            httpContext.Session.SetString("Email", body.Email);
+            httpContext.Session.SetString("Email", body.Email!);
             httpContext.Session.SetString("Otp", otp);
 
-            await SendOtpEmail(body.Email, otp);
+            await SendOtpEmail(body.Email!, otp);
 
 
             return Results.Ok(body.Email);
@@ -221,8 +221,8 @@ namespace Backend.Controllers
             };
             var result = await userManager.CreateAsync(
                 user,
-                userRegistrationModel.Password);
-            await userManager.AddToRoleAsync(user, userRegistrationModel.Role);
+                userRegistrationModel.Password!);
+            await userManager.AddToRoleAsync(user, userRegistrationModel.Role!);
 
             return result.Succeeded ? Results.Ok(result) : Results.BadRequest(result);
 
@@ -267,7 +267,7 @@ namespace Backend.Controllers
         private static async Task<IResult> FindUser(UserManager<AppUser> userManager,
         [FromBody] OtpRequestModel body)
         {
-            var user = await userManager.FindByEmailAsync(body.Email);
+            var user = await userManager.FindByEmailAsync(body.Email!);
             if (user != null)
             {
                 return Results.Ok($"User Found");
@@ -282,9 +282,9 @@ namespace Backend.Controllers
                 [FromBody] LoginModel loginModel,
                 IOptions<AppSettings> appSettings)
         {
-            var user = await userManager.FindByEmailAsync(loginModel.Email);
+            var user = await userManager.FindByEmailAsync(loginModel.Email!);
             //userManager.DeleteAsync(user);
-            if (user != null && await userManager.CheckPasswordAsync(user, loginModel.Password))
+            if (user != null && await userManager.CheckPasswordAsync(user, loginModel.Password!))
             {
                 var roles = await userManager.GetRolesAsync(user);
                 var signInKey = new SymmetricSecurityKey(

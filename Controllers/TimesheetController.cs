@@ -97,7 +97,7 @@ namespace Backend.Controllers
             {
                 EmpId = timesheetDto.EmpId,
                 TaskId = timesheetDto.TaskId,
-                Date = timesheetDto.Date.Value,
+                Date = timesheetDto.Date!.Value,
                 //EndTime = timesheetDto.EndTime.Value,
                 TotalMinutes = timesheetDto.TotalMinutes
             };

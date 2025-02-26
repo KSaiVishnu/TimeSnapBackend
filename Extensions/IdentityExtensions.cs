@@ -111,7 +111,7 @@ namespace Backend.Extensions
     {
         public Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
         {
-            if (!user.Email.EndsWith(".ac.in"))
+            if (user.Email!.EndsWith(".ac.in"))
             {
                 return Task.FromResult(IdentityResult.Failed(new IdentityError
                 {

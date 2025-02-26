@@ -91,7 +91,7 @@ public class UpdateTaskRequest
                 return BadRequest(new { message = "Employee Id is Required" });
             }
             //var tasks = await _context.Tasks.ToListAsync();
-            var tasks = await _context.Tasks.Where(t => t.EmpId.Equals(empId)).ToListAsync();
+            var tasks = await _context.Tasks.Where(t => t.EmpId!.Equals(empId)).ToListAsync();
             var groupedTasks = tasks.GroupBy(t => t.Status).Select(g => new
             {
                 Status = g.Key.ToString(),
@@ -168,7 +168,7 @@ public class UpdateTaskRequest
 
             var existingAssignees = taskRecords.Select(t => new { t.Assignee, t.EmpId }).ToHashSet();
 
-            var newAssignees = request.Assignees
+            var newAssignees = request.Assignees!
                 .Where(a => !existingAssignees.Any(e => e.EmpId == a.EmpId))
                 .ToList();
 
@@ -198,7 +198,7 @@ public class UpdateTaskRequest
             }
 
             var assigneesToRemove = existingAssignees
-                .Where(e => !request.Assignees.Any(a => a.EmpId == e.EmpId))
+                .Where(e => request.Assignees!.Any(a => a.EmpId == e.EmpId))
                 .ToList();
 
             foreach (var assignee in assigneesToRemove)
