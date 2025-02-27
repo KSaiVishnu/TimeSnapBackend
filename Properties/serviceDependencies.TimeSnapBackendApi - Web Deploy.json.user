@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "restored": true,
+      "restoreTime": "2025-02-27T07:09:40.9299471Z"
+    },
+    "mssql3": {
+      "restored": true,
+      "restoreTime": "2025-02-27T08:48:44.5833097Z"
+    },
+    "mssql1": {
+      "restored": true,
+      "restoreTime": "2025-02-27T07:09:44.4908005Z"
+    }
+  },
+  "parameters": {
+    "mssql3.subscriptionId": {
+      "Name": "mssql3.subscriptionId",
+      "Type": "subscription",
+      "Value": "4ee87681-5e3c-4a14-b52f-6646be036485"
+    },
+    "mssql3.serviceConnectorResourceGroupName": {
+      "Name": "mssql3.serviceConnectorResourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "TimeSnapApi"
+    },
+    "mssql3.resourceGroupName": {
+      "Name": "mssql3.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "TimeSnapApi"
+    }
+  }
+}
