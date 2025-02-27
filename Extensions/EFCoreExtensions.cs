@@ -167,7 +167,15 @@ namespace Backend.Extensions
             this IServiceCollection services,
             IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DefaultConnection");
+            //var connectionString = config.GetConnectionString("DefaultConnection");
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION_STRING")
+    ?? config.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Database connection string is missing.");
+            }
+
 
             // ✅ Check if running in Azure (Managed Identity is enabled)
             if (Environment.GetEnvironmentVariable("AZURE_SQL") == "true")

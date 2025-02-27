@@ -152,7 +152,10 @@ namespace Backend.Extensions
 
         public static IServiceCollection AddIdentityAuth(this IServiceCollection services, IConfiguration config)
         {
-            var jwtSecret = config["AppSettings:JWTSecret"];
+            //var jwtSecret = config["AppSettings:JWTSecret"];
+            var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
+    ?? config["AppSettings:JWTSecret"];
+
 
             if (string.IsNullOrEmpty(jwtSecret))
             {

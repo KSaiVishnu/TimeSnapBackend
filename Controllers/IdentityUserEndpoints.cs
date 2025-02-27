@@ -54,7 +54,7 @@ namespace Backend.Controllers
     
     public static class IdentityUserEndpoints
     {
-        public static string? ApiKey { get; private set; }
+        //public static string? ApiKey { get; private set; }
 
         public static IEndpointRouteBuilder MapIdentityUserEndpoints(this IEndpointRouteBuilder app)
         {
@@ -132,10 +132,12 @@ namespace Backend.Controllers
 
 
         [AllowAnonymous]
-        private static async Task SendOtpEmail(string email, string otp)
+        private static async Task SendOtpEmail(string email, string otp, IConfiguration config)
         {
             // Retrieve SendGrid API Key from environment variables
-            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY")
+                ?? config["SendGrid:ApiKey"];
+
 
             if (string.IsNullOrEmpty(apiKey))
             {
@@ -192,7 +194,9 @@ namespace Backend.Controllers
             httpContext.Session.SetString("Email", body.Email!);
             httpContext.Session.SetString("Otp", otp);
 
-            await SendOtpEmail(body.Email!, otp);
+            //await SendOtpEmail(body.Email!, otp);
+            await SendOtpEmail(body.Email!, otp, httpContext.RequestServices.GetRequiredService<IConfiguration>());
+
 
 
             return Results.Ok(body.Email);
