@@ -168,8 +168,7 @@ namespace Backend
             // ✅ Inject DB Context (Uses Azure Managed Identity for authentication)
             //builder.Services.InjectDbContext(builder.Configuration);
 
-            var connectionString = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTION_STRING")
-                                   ?? builder.Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             if (string.IsNullOrEmpty(connectionString))
             {

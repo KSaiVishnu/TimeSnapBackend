@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <History>True|2025-02-27T04:48:47.3626020Z||;True|2025-02-26T16:53:01.9695765+05:30||;True|2025-02-26T16:35:20.6346601+05:30||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <AzureDBConnectionStrings Include="REDACTED" />
+    <AzureDBConnectionStrings Include="Server=tcp:timesnap-server.database.windows.net,1433;Database=ProjectDb;Authentication=Active Directory Default" />
+    <AzureDBConnectionStrings Include="Server=tcp:timesnap-server.database.windows.net;Authentication=Active Directory Default;Database=ProjectDb" />
+  </ItemGroup>
+</Project>
